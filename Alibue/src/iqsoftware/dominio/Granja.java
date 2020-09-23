@@ -1,7 +1,6 @@
 package iqsoftware.dominio;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Granja {
 	
@@ -58,7 +57,7 @@ public class Granja {
 	public Granja(String nombre, LocalDate fecha_ingreso, String cuit, String telefono, int crianza,
 			int id_usuario) {
 		super();
-		this.id_granja = id_granja;
+	
 		this.Nombre = nombre;
 		this.fecha_ingreso = fecha_ingreso;
 		this.cuit = cuit;
@@ -72,23 +71,20 @@ public class Granja {
 	
 	public Granja(String nombre, LocalDate fecha_ingreso, String cuit, String telefono, int crianza) {
 		super();
-		this.id_granja = id_granja;
+		
 		this.Nombre = nombre;
 		this.fecha_ingreso = fecha_ingreso;
 		this.cuit = cuit;
 		this.telefono = telefono;
 		this.crianza = crianza;
-		this.id_usuario = id_usuario;
+		
 	}
 	
 	public Granja(String cuit) {
 		super();
-		this.id_granja = id_granja;
-		this.fecha_ingreso = fecha_ingreso;
+		
+		
 		this.cuit = cuit;
-		this.telefono = telefono;
-		this.crianza = crianza;
-		this.id_usuario = id_usuario;
 	}
 	
 	@Override

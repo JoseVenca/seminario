@@ -6,10 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
+
 
 import iqsoftware.conexion.Conexion;
 import iqsoftware.dominio.Empleados;
+import iqsoftware.dominio.Fecha;
 import iqsoftware.interfaz.EmpleadoDAO;
 
 
@@ -26,7 +27,7 @@ public class EmpleadoSQL implements EmpleadoDAO{
 
 	@Override
 	public boolean addEmpleado(Empleados emp) throws SQLException {
-		query="insert into Empleados values ('"+emp.getNombre()+"','"+emp.getApellido()+"', '"+emp.getDni()+"','"+emp.getTelefono()+"','"+emp.getEmail()+"','"+emp.getSector()+"','"+emp.getEstado()+"','"+emp.getComentario()+"','"+emp.getId_usuario()+"')";
+		query="insert into Empleados values ('"+emp.getNombre()+"','"+emp.getApellido()+"', '"+emp.getDni()+"','"+emp.getTelefono()+"','"+emp.getEmail()+"','"+emp.getSector()+"','"+emp.getId_usuario()+"')";
 		st=cn.createStatement();
 		int r=st.executeUpdate(query);
 		if(r==1) {
@@ -95,8 +96,6 @@ public class EmpleadoSQL implements EmpleadoDAO{
 			e.setTelefono(set.getString(5));
 			e.setEmail(set.getString(6));
 			e.setSector(set.getString(7));
-			e.setEstado(set.getString(8));
-			e.setComentario(set.getString(9));
 			em.add(e);
 			System.out.println(e.toString());
 		}
@@ -107,11 +106,48 @@ public class EmpleadoSQL implements EmpleadoDAO{
 	
 	}
 
-	@Override
-	public List<Empleados> getByDNI(Empleados emp) throws SQLException {
-		
-		return null;
 
+	@Override
+	public boolean addFaltas(Fecha fec) throws SQLException {
+		query="insert into Faltas values ('"+fec.getEstado()+"','"+fec.getFaltas()+"', '"+fec.getFecha()+"','"+fec.getComentario()+"','"+fec.getId_empleados()+"')";
+		st=cn.createStatement();
+		int r=st.executeUpdate(query);
+		if(r==1) {
+			st.close();
+			cn.close();
+			return true;
+		}else {
+			st.close();
+			cn.close();
+			return false;
+	}
+	}
+
+	@Override
+	public Empleados getFalta(Empleados emp) throws SQLException {
+		cn=null;
+		cn=Conexion.getConector();
+		ArrayList<Empleados> em= new ArrayList<>();
+		query="select Empleados.Nombre, Empleados.Apellido, Empleados.DNI, Empleados.Sector, Faltas.Estado,Faltas.Fecha, Faltas.Comentario FROM Empleados INNER JOIN Faltas ON Empleados.Id_empleados = Faltas.Id_Empleados where Empleados.DNI=?";
+		ps=cn.prepareStatement(query);
+		ps.setString(1, emp.getDni());
+		ResultSet set=ps.executeQuery();
+		Empleados e= new Empleados();
+		while(set.next()) {
+			e.setNombre(set.getString(1));
+			e.setApellido(set.getString(2));
+			e.setDni(set.getString(3));
+			e.setSector(set.getString(4));
+			e.setEstado(set.getString(5));
+			e.setFecha(set.getDate(6));
+			e.setComentario(set.getString(7));
+			em.add(e);
+			System.out.println(e.toString());
+		}
+		set.close();
+		ps.close();
+		cn.close();
+		return emp;
 	}
 
 }

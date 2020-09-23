@@ -1,9 +1,7 @@
 package iqsoftware.interfaz;
 
 import java.sql.SQLException;
-import java.util.List;
 
-import iqsoftware.dominio.Empleados;
 import iqsoftware.dominio.Granja;
 
 public interface GranjaDAO {
